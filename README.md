@@ -51,13 +51,18 @@ The project is structured as three main components:
    - Pre-configured for database connection
    - Ready for UI development
 
-## How to setup and start the containers
-**Important** - you need Docker Desktop installed
+## Quick Start
+**Prerequisites**: Docker Desktop must be installed
 
-1. Clone this repository.  
-1. Create a file named `db_root_password.txt` in the `secrets/` folder and put inside of it the root password for MySQL. 
-1. Create a file named `db_password.txt` in the `secrets/` folder and put inside of it the password you want to use for the a non-root user named webapp. 
-1. In a terminal or command prompt, navigate to the folder with the `docker-compose.yml` file.  
-1. Build the images with `docker compose build`
-1. Start the containers with `docker compose up`.  To run in detached mode, run `docker compose up -d`. 
+1. Clone this repository
+2. Set up database credentials:
+   - Create `secrets/db_root_password.txt` with MySQL root password
+   - Create `secrets/db_password.txt` with password for webapp user
+3. Build and start containers:
+   ```bash
+   docker compose build
+   docker compose up        # Run in foreground
+   # OR
+   docker compose up -d    # Run in detached mode
+   ``` 
 --卢冬华贡献--
