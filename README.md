@@ -280,7 +280,7 @@ docker compose top
 -------傅可的贡献（User manual）
 # MySQL + Flask Boilerplate Project
 
-This repository provides a boilerplate setup for a development environment with three Docker containers:
+A development environment boilerplate that sets up three Docker containers:
 1. MySQL 8 database server
 2. Python Flask REST API server
 3. Local AppSmith server for frontend development
@@ -291,59 +291,122 @@ This repository provides a boilerplate setup for a development environment with 
 - Git for cloning the repository
 - Basic understanding of Docker and containerization
 
-## Setup Instructions
+## Quick Start
 
-### 1. Clone the Repository
-
-
-### 2. Configure Database Credentials
-
-Create the following files in the `secrets/` directory:
-
-1. `db_root_password.txt`
-   - Contains the root password for MySQL
-   - Example: `my_root_password123`
-
-2. `db_password.txt`
-   - Contains the password for the non-root user 'webapp'
-   - Example: `my_webapp_password456`
-
-### 3. Build and Start Containers
-
-1. Navigate to the project directory containing `docker-compose.yml`:
+1. Clone this repository:
 
 
 
-2. Build the Docker images:
+2. Configure database credentials:
+   - Create `secrets_root_password.txt` with MySQL root password
+   - Create `secrets_password.txt` with password for 'webapp' user
 
+3. Build and start containers:
 
-3. Start the containers:
-
-
-### 4. Verify Installation
-
-After starting the containers, you can verify they're running with:
 
 
 ## Container Access
 
-- MySQL Database: `localhost:3306`
-- Flask API: `localhost:5000`
-- AppSmith: `localhost:80`
+| Service | URL | Port |
+|---------|-----|------|
+| MySQL Database | localhost | 3306 |
+| Flask API | localhost | 5000 |
+| AppSmith | localhost | 80 |
 
-## Stopping the Environment
-
-To stop the containers:
+## Common Commands
 
 
 
 ## Troubleshooting
 
-If you encounter any issues:
+1. **Docker not running**
+   - Ensure Docker Desktop is running
+   - Check Docker service status
 
-1. Check if Docker Desktop is running
-2. Verify the secret files are properly created
-3. Check container logs:
+2. **Container startup issues**
+   - Verify secret files exist in `secrets/` directory
+   - Check container logs: `docker compose logs`
+   - Ensure ports are not in use
+
+3. **Database connection issues**
+   - Verify MySQL container is running
+   - Check database credentials
+   - Ensure network connectivity between containers
+
+## Development
+
+- Flask API code is in `api/` directory
+- Database migrations can be managed through Flask-Migrate
+- AppSmith configurations are stored in `appsmith/` directory
+
+## Additional Resources
+
+- [Docker Documentation](https://docs.docker.com/)
+- [Flask Documentation](https://flask.palletsprojects.com/)
+- [MySQL Documentation](https://dev.mysql.com/doc/)
+- [AppSmith Documentation](https://docs.appsmith.com/)
+
+
+# MySQL + Flask Boilerplate Project
+
+A development environment boilerplate that sets up three Docker containers:
+1. MySQL 8 database server
+2. Python Flask REST API server
+3. Local AppSmith server for frontend development
+
+## Prerequisites
+
+- Docker Desktop installed on your machine
+- Git for cloning the repository
+- Basic understanding of Docker and containerization
+
+## Quick Start
+
+1. Clone this repository:
+
+
+
+2. Configure database credentials:
+   - Create `secrets_root_password.txt` with MySQL root password
+   - Create `secrets_password.txt` with password for 'webapp' user
+
+3. Build and start containers:
+
+
+
+## Container Access
+
+| Service | URL | Port |
+|---------|-----|------|
+| MySQL Database | localhost | 3306 |
+| Flask API | localhost | 5000 |
+| AppSmith | localhost | 80 |
+
+## Common Commands
+
+
+
+## Troubleshooting
+
+1. **Docker not running**
+   - Ensure Docker Desktop is running
+   - Check Docker service status
+
+2. **Container startup issues**
+   - Verify secret files exist in `secrets/` directory
+   - Check container logs: `docker compose logs`
+   - Ensure ports are not in use
+
+3. **Database connection issues**
+   - Verify MySQL container is running
+   - Check database credentials
+   - Ensure network connectivity between containers
+
+## Development
+
+- Flask API code is in `api/` directory
+- Database migrations can be managed through Flask-Migrate
+- AppSmith configurations are stored in `appsmith/` directory
 
 ## Additional Resources
 
