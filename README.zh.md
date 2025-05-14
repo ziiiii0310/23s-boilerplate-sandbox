@@ -166,7 +166,7 @@ docker compose down
 1. 容器启动失败
 ◦ 查看日志：docker compose logs
 ◦ 确认密钥文件存在且权限正确
-◦ 确保8001和3200端口未被占用
+◦ 确保8001和3200端口未被占用     
 2. 数据库连接问题
 ◦ 确认MySQL容器运行状态：docker compose ps
 ◦ 检查数据库日志：docker compose logs db
