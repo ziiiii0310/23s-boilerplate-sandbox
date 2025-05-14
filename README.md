@@ -275,3 +275,79 @@ docker stats
 
 # View container processes
 docker compose top
+
+
+-------傅可的贡献（User manual）
+# MySQL + Flask Boilerplate Project
+
+This repository provides a boilerplate setup for a development environment with three Docker containers:
+1. MySQL 8 database server
+2. Python Flask REST API server
+3. Local AppSmith server for frontend development
+
+## Prerequisites
+
+- Docker Desktop installed on your machine
+- Git for cloning the repository
+- Basic understanding of Docker and containerization
+
+## Setup Instructions
+
+### 1. Clone the Repository
+
+
+### 2. Configure Database Credentials
+
+Create the following files in the `secrets/` directory:
+
+1. `db_root_password.txt`
+   - Contains the root password for MySQL
+   - Example: `my_root_password123`
+
+2. `db_password.txt`
+   - Contains the password for the non-root user 'webapp'
+   - Example: `my_webapp_password456`
+
+### 3. Build and Start Containers
+
+1. Navigate to the project directory containing `docker-compose.yml`:
+
+
+
+2. Build the Docker images:
+
+
+3. Start the containers:
+
+
+### 4. Verify Installation
+
+After starting the containers, you can verify they're running with:
+
+
+## Container Access
+
+- MySQL Database: `localhost:3306`
+- Flask API: `localhost:5000`
+- AppSmith: `localhost:80`
+
+## Stopping the Environment
+
+To stop the containers:
+
+
+
+## Troubleshooting
+
+If you encounter any issues:
+
+1. Check if Docker Desktop is running
+2. Verify the secret files are properly created
+3. Check container logs:
+
+## Additional Resources
+
+- [Docker Documentation](https://docs.docker.com/)
+- [Flask Documentation](https://flask.palletsprojects.com/)
+- [MySQL Documentation](https://dev.mysql.com/doc/)
+- [AppSmith Documentation](https://docs.appsmith.com/)
