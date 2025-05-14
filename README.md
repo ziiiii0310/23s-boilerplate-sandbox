@@ -67,33 +67,28 @@ The project is structured as three main components:
    ``` 
 --卢冬华贡献--
 ##周玉涛##
-# Installation and Deployment Guide
+## 🚀 Installation & Deployment Guide
 
-This guide will walk you through the process of setting up and deploying the application using Docker. Our application consists of two main services:
-- A Flask web application
-- A MySQL database
-
-## Prerequisites
-
-Before you begin, make sure you have the following installed on your system:
-- Docker (version 20.10.0 or higher)
-- Docker Compose (version 2.0.0 or higher)
+### Prerequisites
+- Docker Engine (20.10.x or higher)
+- Docker Compose (v2.x or higher)
 - Git
+- 2GB+ RAM
+- 1GB+ free disk space
 
-## Quick Start
-
+### Quick Start
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd <repository-name>
+cd <project-directory>
 ```
 
-2. Set up the secrets:
+2. Set up secrets:
 ```bash
-# Create a secrets directory
+# Create secrets directory
 mkdir -p secrets
 
-# Create password files for MySQL
+# Create and populate password files
 echo "your_db_password" > secrets/db_password.txt
 echo "your_db_root_password" > secrets/db_root_password.txt
 
@@ -101,124 +96,127 @@ echo "your_db_root_password" > secrets/db_root_password.txt
 chmod 600 secrets/db_password.txt secrets/db_root_password.txt
 ```
 
-3. Start the application:
+3. Launch the application:
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 The application will be available at:
-- Web Application: http://localhost:8001
-- Database: localhost:3200
+- Web Application: `http://localhost:8001`
+- Database (for admin access): `localhost:3200`
 
-## Detailed Configuration
+### 🐳 Docker Configuration Details
 
-### Environment Setup
+Our application uses a multi-container setup managed by Docker Compose:
 
-The application uses the following port mappings:
-- Flask Application: `8001:4000`
-- MySQL Database: `3200:3306`
+#### Web Application Container (`web`)
+- Built from custom Flask application
+- Exposed on port 8001 (host) → 4000 (container)
+- Auto-restarts on failure
+- Volume mappings:
+  - `./flask-app:/code` - Application code
+  - `./secrets:/secrets` - Secure credentials
 
-### Database Configuration
+#### Database Container (`db`)
+- MySQL 8.0
+- Exposed on port 3200 (host) → 3306 (container)
+- Secure credential management using Docker secrets
+- Volume mapping:
+  - `./db:/docker-entrypoint-initdb.d/:ro` - Initial database setup scripts
 
-The MySQL database is configured with:
-- Default user: `webapp`
-- Password: Stored in `secrets/db_password.txt`
-- Root password: Stored in `secrets/db_root_password.txt`
+### 🔐 Security Features
+- Database passwords stored as Docker secrets
+- Read-only volume mounts where applicable
+- Separate user account for application database access
+- Restricted port exposure
 
-### Volume Mounts
+### 🛠 Environment Configuration
+The application uses the following environment variables (configured in docker-compose.yml):
+```yaml
+MYSQL_USER: webapp
+MYSQL_PASSWORD_FILE: /run/secrets/secret_db_pw
+MYSQL_ROOT_PASSWORD_FILE: /run/secrets/secret_db_root_pw
+```
 
-The application uses the following volume mounts:
-- `./flask-app:/code`: Flask application code
-- `./secrets:/secrets`: Secret files
-- `./db:/docker-entrypoint-initdb.d/`: Database initialization scripts
+### 📝 Container Management Commands
 
-## Development Setup
+#### View running containers:
+```bash
+docker compose ps
+```
 
-For development purposes, the Flask application code is mounted as a volume, allowing for real-time code changes without rebuilding the container.
+#### View application logs:
+```bash
+# All containers
+docker compose logs
 
-1. Make changes to the Flask application code in the `flask-app` directory
-2. The changes will be reflected immediately (may require a browser refresh)
+# Specific container
+docker compose logs web
+docker compose logs db
+```
 
-## Maintenance
-
-### Viewing Logs
-
-To view service logs:
+#### Restart services:
 ```bash
 # All services
-docker-compose logs
+docker compose restart
 
 # Specific service
-docker-compose logs web  # For Flask app
-docker-compose logs db   # For database
+docker compose restart web
 ```
 
-### Stopping the Application
-
-To stop the application:
+#### Stop and remove containers:
 ```bash
-docker-compose down
-```
+docker compose down
+## 🔍 Troubleshooting
 
-### Rebuilding Services
+1. **Container fails to start**
+   - Check logs: `docker compose logs`
+   - Verify secret files exist and have correct permissions
+   - Ensure ports 8001 and 3200 are not in use
 
-If you make changes to the Dockerfile or need to rebuild the services:
+2. **Database connection issues**
+   - Verify MySQL container is running: `docker compose ps`
+   - Check database logs: `docker compose logs db`
+   - Ensure password files contain correct credentials
+
+3. **Volume mount issues**
+   - Verify directory permissions
+   - Check if paths in docker-compose.yml match your project structure
+
+### 🔄 Updating the Application
+
+1. Pull latest changes:
 ```bash
-docker-compose build
-docker-compose up -d
+git pull origin main
 ```
 
-## Troubleshooting
-
-### Common Issues
-
-1. **Port Conflicts**
-   - Error: "port is already allocated"
-   - Solution: Check if another service is using ports 8001 or 3200
-   ```bash
-   # On Linux/Mac
-   sudo lsof -i :8001
-   sudo lsof -i :3200
-   ```
-
-2. **Database Connection Issues**
-   - Ensure the secret files contain valid passwords
-   - Check if the database container is running:
-   ```bash
-   docker-compose ps
-   ```
-
-3. **Permission Issues**
-   - Ensure proper permissions on the secrets directory:
-   ```bash
-   chmod -R 600 secrets/
-   ```
-
-### Health Check
-
-To verify all services are running properly:
+2. Rebuild and restart containers:
 ```bash
-docker-compose ps
+docker compose down
+docker compose up -d --build
 ```
 
-All services should show status as "Up".
+### 💻 Development Setup
 
-## Security Notes
+For development purposes, you can use the following additional commands:
 
-1. Never commit the `secrets` directory to version control
-2. Always use secure passwords in production
-3. Change default database credentials in production environments
-4. Consider using environment variables for sensitive configuration in production
+```bash
+# View real-time logs
+docker compose logs -f
 
-## Production Deployment
+# Access MySQL CLI
+docker compose exec db mysql -u root -p
 
-For production deployment, additional considerations are required:
+# Access web container shell
+docker compose exec web /bin/bash
+```
 
-1. Use proper SSL/TLS certificates
-2. Configure proper firewall rules
-3. Set up monitoring and logging
-4. Use production-grade database configurations
-5. Implement proper backup strategies
+### 📊 System Requirements Monitoring
 
-Please refer to the production deployment guide for detailed instructions.
+Monitor your container resources:
+```bash
+# View container resource usage
+docker stats
 
+# View container processes
+docker compose top
